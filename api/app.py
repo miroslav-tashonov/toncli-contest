@@ -16,26 +16,26 @@ def home():
 @app.route('/api/runtests/<filename>')
 def runtests(filename):
     mutex.acquire()
-    expected_success = [5, 5, 5, 5, 5]
+    expected_success = [11, 5, 5, 5, 5]
 
     #filename = escape(filename)
     filename_without_extension = str(filename).replace(".tar.gz", "")
     extract_path = f'../participant-files/{filename_without_extension}'
 
-    shutil.unpack_archive(f'../participant-files/{filename}', extract_path)
+    exist = os.path.exists(extract_path)
+    if not exist:
+        os.makedirs(extract_path)
+
     shutil.copytree('../func-contest-files/', f'{extract_path}/func-contest-files')
+    shutil.unpack_archive(f'../participant-files/{filename}', f'{extract_path}/func-contest-files/func')
 
     result_string = ''
-
-    for i in range(1, 6):
-        shutil.copy2(f'{extract_path}/{i}.fc', f'{extract_path}/func-contest-files/task-{i}/func/')
-        os.chdir(f'{extract_path}/func-contest-files/task-{i}/')
-
-        test_result = os.popen('toncli run_tests').read()
-        how_many = test_result.count('SUCCESS')
-        result_string = result_string+f'{i}. {how_many}/{expected_success[i-1]} \n'
-
-        os.chdir('../../../../api')
+    os.chdir(f'{extract_path}/func-contest-files')
+    for i in range(1, 2):
+        test_result = os.popen(f'toncli run_tests -c contest-{i}').read()
+        result_string += test_result
+    
+    os.chdir('../../../api')
 
     shutil.rmtree(extract_path)
 
