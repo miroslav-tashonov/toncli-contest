@@ -1,6 +1,0 @@
-Jinja2
-appdirs
-bitstring
-colorama
-pyyaml
-requests
