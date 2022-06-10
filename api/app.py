@@ -28,7 +28,7 @@ def runtests(filename):
     result_string = ''
 
     for i in range(1, 6):
-        shutil.copy2(f'{extract_path}/{i}.fc', f'{extract_path}/func-contest-files/task-{i}/fc/')
+        shutil.copy2(f'{extract_path}/{i}.fc', f'{extract_path}/func-contest-files/task-{i}/func/')
         os.chdir(f'{extract_path}/func-contest-files/task-{i}/')
 
         test_result = os.popen('toncli run_tests').read()
