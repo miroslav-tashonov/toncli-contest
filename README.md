@@ -1,6 +1,6 @@
 # toncli-contest
 
-To run this as a container, go to the cloned repo path and run to build the image
+To run this as a container, go to the cloned repo path and build the image
 
 ```docker build -t toncli-api .```
 
