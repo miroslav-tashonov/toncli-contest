@@ -16,8 +16,7 @@ def home():
 @app.route('/api/runtests/<filename>')
 def runtests(filename):
     mutex.acquire()
-    expected_success = [11, 5, 5, 5, 5]
-
+    task_names = ['Greatest common divisor', 'Message validation', '(De)Serialize to Cell', 'Merge hashmaps', 'Address encoder']
     #filename = escape(filename)
     filename_without_extension = str(filename).replace(".tar.gz", "")
     extract_path = f'../participant-files/{filename_without_extension}'
@@ -33,7 +32,9 @@ def runtests(filename):
     os.chdir(f'{extract_path}/func-contest-files')
     for i in range(1, 2):
         test_result = os.popen(f'toncli run_tests -c contest-{i}').read()
-        result_string += test_result
+        index = test_result.find('Test result:')
+        score = test_result[index+20:index+24]
+        result_string += f'TASK {i} - {task_names[i]} score is : {score}/100 \n'
     
     os.chdir('../../../api')
 
