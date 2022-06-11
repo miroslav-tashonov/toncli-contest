@@ -1,4 +1,4 @@
-_ __test_gcd_1() {
+_ test_gcd_1() {
     var expected_result = 2;
     var (_, stack) = invoke_method(gcd, [1,1]);
     [int data] = stack;
@@ -8,7 +8,7 @@ _ __test_gcd_1() {
     return 5;
 }
 
-_ __test_gcd_2() {
+_ test_gcd_2() {
     var expected_result = 1048575;
 
     var (_, stack) = invoke_method(gcd, [1048575,1048575]);
@@ -19,7 +19,7 @@ _ __test_gcd_2() {
     return 5;
 }
 
-_ __test_gcd_3() {
+_ test_gcd_3() {
     var expected_result = 25;
 
     var (_, stack) = invoke_method(gcd, [125,1048575]);
@@ -30,7 +30,7 @@ _ __test_gcd_3() {
     return 10;
 }
 
-_ __test_gcd_4() {
+_ test_gcd_4() {
     var expected_result = 1;
 
     var (_, stack) = invoke_method(gcd, [13,48]);
@@ -41,7 +41,7 @@ _ __test_gcd_4() {
     return 10;
 }
 
-_ __test_gcd_5() {
+_ test_gcd_5() {
     var expected_result = 13;
 
     var (_, stack) = invoke_method(gcd, [52,13]);
@@ -52,7 +52,7 @@ _ __test_gcd_5() {
     return 10;
 }
 
-_ __test_gcd_6() {
+_ test_gcd_6() {
     var expected_result = 524287;
 
     var (_, stack) = invoke_method(gcd, [1048574,524287]);
@@ -63,7 +63,7 @@ _ __test_gcd_6() {
     return 10;
 }
 
-_ __test_gcd_7() {
+_ test_gcd_7() {
     var expected_result = 1;
 
     var (_, stack) = invoke_method(gcd, [1048573,524280]);
@@ -74,7 +74,7 @@ _ __test_gcd_7() {
     return 10;
 }
 
-_ __test_gcd_8() {
+_ test_gcd_8() {
     var expected_result = 33;
 
     var (_, stack) = invoke_method(gcd, [891,3993]);
@@ -85,7 +85,7 @@ _ __test_gcd_8() {
     return 10;
 }
 
-_ __test_gcd_9() {
+_ test_gcd_9() {
     var expected_result = 420;
 
     var (_, stack) = invoke_method(gcd, [4200,3780]);
@@ -96,7 +96,7 @@ _ __test_gcd_9() {
     return 15;
 }
 
-_ __test_gcd_10() {
+_ test_gcd_10() {
     var expected_result = 252;
 
     var (_, stack) = invoke_method(gcd, [3780,3528]);
@@ -110,25 +110,25 @@ _ __test_gcd_10() {
 _ __test_gcd_total_points(){
     var total_result = 0;
 
-    var (code, _, stack) = invoke_method_full(__test_gcd_1, []);
+    var (code, _, stack) = invoke_method_full(test_gcd_1, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_2, []);
+    var (code, _, stack) = invoke_method_full(test_gcd_2, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_3, []);
+    var (code, _, stack) = invoke_method_full(test_gcd_3, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_4, []);
+    var (code, _, stack) = invoke_method_full(test_gcd_4, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_5, []);
+    var (code, _, stack) = invoke_method_full(test_gcd_5, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_6, []);
+    var (code, _, stack) = invoke_method_full(test_gcd_6, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_7, []);
+    var (code, _, stack) = invoke_method_full(test_gcd_7, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_8, []);
+    var (code, _, stack) = invoke_method_full(test_gcd_8, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_9, []);
+    var (code, _, stack) = invoke_method_full(test_gcd_9, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_10, []);
+    var (code, _, stack) = invoke_method_full(test_gcd_10, []);
     total_result += (code != 0) ? 0 : stack.first();
     
     return total_result;
