@@ -1,136 +1,127 @@
-_ __test_gcd_1() {
-    var expected_result = 2;
-    var (_, stack) = invoke_method(gcd, [1,1]);
-    [int data] = stack;
+_ test_encode_address_1() {
+    slice address = begin_cell().end_cell().begin_parse();
+    cell second_dictionary = begin_cell().end_cell();
 
-    throw_if(200, data != expected_result );
-
-    return 5;
-}
-
-_ __test_gcd_2() {
-    var expected_result = 1048575;
-
-    var (_, stack) = invoke_method(gcd, [1048575,1048575]);
-    [int data] = stack;
-    
-    throw_if(200, data != expected_result );
+    var (_, stack) = invoke_method(encode_address, [address]);
+    [slice result] = stack;
 
     return 5;
 }
 
-_ __test_gcd_3() {
-    var expected_result = 25;
+_ test_encode_address_2() {
+    slice address = begin_cell().end_cell().begin_parse();
+    cell second_dictionary = begin_cell().end_cell();
 
-    var (_, stack) = invoke_method(gcd, [125,1048575]);
-    [int data] = stack;
-    
-    throw_if(200, data != expected_result );
+    var (_, stack) = invoke_method(encode_address, [address]);
+    [slice result] = stack;
+
+    return 5;
+}
+
+_ test_encode_address_3() {
+    slice address = begin_cell().end_cell().begin_parse();
+    cell second_dictionary = begin_cell().end_cell();
+
+    var (_, stack) = invoke_method(encode_address, [address]);
+    [slice result] = stack;
+
+    return 5;
+}
+
+_ test_encode_address_4() {
+    slice address = begin_cell().end_cell().begin_parse();
+    cell second_dictionary = begin_cell().end_cell();
+
+    var (_, stack) = invoke_method(encode_address, [address]);
+    [slice result] = stack;
 
     return 10;
 }
 
-_ __test_gcd_4() {
-    var expected_result = 1;
+_ test_encode_address_5() {
+    slice address = begin_cell().end_cell().begin_parse();
+    cell second_dictionary = begin_cell().end_cell();
 
-    var (_, stack) = invoke_method(gcd, [13,48]);
-    [int data] = stack;
-    
-    throw_if(200, data != expected_result );
-
-    return 10;
-}
-
-_ __test_gcd_5() {
-    var expected_result = 13;
-
-    var (_, stack) = invoke_method(gcd, [52,13]);
-    [int data] = stack;
-    
-    throw_if(200, data != expected_result );
+    var (_, stack) = invoke_method(encode_address, [address]);
+    [slice result] = stack;
 
     return 10;
 }
 
-_ __test_gcd_6() {
-    var expected_result = 524287;
+_ test_encode_address_6() {
+    slice address = begin_cell().end_cell().begin_parse();
+    cell second_dictionary = begin_cell().end_cell();
 
-    var (_, stack) = invoke_method(gcd, [1048574,524287]);
-    [int data] = stack;
-    
-    throw_if(200, data != expected_result );
-
-    return 10;
-}
-
-_ __test_gcd_7() {
-    var expected_result = 1;
-
-    var (_, stack) = invoke_method(gcd, [1048573,524280]);
-    [int data] = stack;
-    
-    throw_if(200, data != expected_result );
+    var (_, stack) = invoke_method(encode_address, [address]);
+    [slice result] = stack;
 
     return 10;
 }
 
-_ __test_gcd_8() {
-    var expected_result = 33;
+_ test_encode_address_7() {
+    slice address = begin_cell().end_cell().begin_parse();
+    cell second_dictionary = begin_cell().end_cell();
 
-    var (_, stack) = invoke_method(gcd, [891,3993]);
-    [int data] = stack;
-    
-    throw_if(200, data != expected_result );
+    var (_, stack) = invoke_method(encode_address, [address]);
+    [slice result] = stack;
 
     return 10;
 }
 
-_ __test_gcd_9() {
-    var expected_result = 420;
+_ test_encode_address_8() {
+    slice address = begin_cell().end_cell().begin_parse();
+    cell second_dictionary = begin_cell().end_cell();
 
-    var (_, stack) = invoke_method(gcd, [4200,3780]);
-    [int data] = stack;
-    
-    throw_if(200, data != expected_result );
+    var (_, stack) = invoke_method(encode_address, [address]);
+    [slice result] = stack;
 
     return 15;
 }
 
-_ __test_gcd_10() {
-    var expected_result = 252;
+_ test_encode_address_9() {
+    slice address = begin_cell().end_cell().begin_parse();
+    cell second_dictionary = begin_cell().end_cell();
 
-    var (_, stack) = invoke_method(gcd, [3780,3528]);
-    [int data] = stack;
-    
-    throw_if(200, data != expected_result );
+    var (_, stack) = invoke_method(encode_address, [address]);
+    [slice result] = stack;
 
     return 15;
 }
 
-_ __test_gcd_total_points(){
+_ test_encode_address_10() {
+    slice address = begin_cell().end_cell().begin_parse();
+    cell second_dictionary = begin_cell().end_cell();
+
+    var (_, stack) = invoke_method(encode_address, [address]);
+    [slice result] = stack;
+
+    return 15;
+}
+
+
+_ __test_encode_address_total_points(){
     var total_result = 0;
 
-    var (code, _, stack) = invoke_method_full(__test_gcd_1, []);
+    var (code, _, stack) = invoke_method_full(test_encode_address_1, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_2, []);
+    var (code, _, stack) = invoke_method_full(test_encode_address_2, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_3, []);
+    var (code, _, stack) = invoke_method_full(test_encode_address_3, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_4, []);
+    var (code, _, stack) = invoke_method_full(test_encode_address_4, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_5, []);
+    var (code, _, stack) = invoke_method_full(test_encode_address_5, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_6, []);
+    var (code, _, stack) = invoke_method_full(test_encode_address_6, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_7, []);
+    var (code, _, stack) = invoke_method_full(test_encode_address_7, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_8, []);
+    var (code, _, stack) = invoke_method_full(test_encode_address_8, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_9, []);
+    var (code, _, stack) = invoke_method_full(test_encode_address_9, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_10, []);
+    var (code, _, stack) = invoke_method_full(test_encode_address_10, []);
     total_result += (code != 0) ? 0 : stack.first();
     
     return total_result;
 }
-
