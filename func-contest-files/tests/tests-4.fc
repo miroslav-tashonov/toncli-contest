@@ -1,136 +1,127 @@
-_ __test_gcd_1() {
-    var expected_result = 2;
-    var (_, stack) = invoke_method(gcd, [1,1]);
-    [int data] = stack;
+_ test_merge_hashmaps_1() {
+    cell first_dictionary = begin_cell().end_cell();
+    cell second_dictionary = begin_cell().end_cell();
 
-    throw_if(200, data != expected_result );
-
-    return 5;
-}
-
-_ __test_gcd_2() {
-    var expected_result = 1048575;
-
-    var (_, stack) = invoke_method(gcd, [1048575,1048575]);
-    [int data] = stack;
-    
-    throw_if(200, data != expected_result );
+    var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
+    [cell first, cell second] = stack;
 
     return 5;
 }
 
-_ __test_gcd_3() {
-    var expected_result = 25;
+_ test_merge_hashmaps_2() {
+    cell first_dictionary = begin_cell().end_cell();
+    cell second_dictionary = begin_cell().end_cell();
 
-    var (_, stack) = invoke_method(gcd, [125,1048575]);
-    [int data] = stack;
-    
-    throw_if(200, data != expected_result );
+    var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
+    [cell first, cell second] = stack;
+
+    return 5;
+}
+
+_ test_merge_hashmaps_3() {
+    cell first_dictionary = begin_cell().end_cell();
+    cell second_dictionary = begin_cell().end_cell();
+
+    var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
+    [cell first, cell second] = stack;
+
+    return 5;
+}
+
+_ test_merge_hashmaps_4() {
+    cell first_dictionary = begin_cell().end_cell();
+    cell second_dictionary = begin_cell().end_cell();
+
+    var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
+    [cell first, cell second] = stack;
 
     return 10;
 }
 
-_ __test_gcd_4() {
-    var expected_result = 1;
+_ test_merge_hashmaps_5() {
+    cell first_dictionary = begin_cell().end_cell();
+    cell second_dictionary = begin_cell().end_cell();
 
-    var (_, stack) = invoke_method(gcd, [13,48]);
-    [int data] = stack;
-    
-    throw_if(200, data != expected_result );
-
-    return 10;
-}
-
-_ __test_gcd_5() {
-    var expected_result = 13;
-
-    var (_, stack) = invoke_method(gcd, [52,13]);
-    [int data] = stack;
-    
-    throw_if(200, data != expected_result );
+    var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
+    [cell first, cell second] = stack;
 
     return 10;
 }
 
-_ __test_gcd_6() {
-    var expected_result = 524287;
+_ test_merge_hashmaps_6() {
+    cell first_dictionary = begin_cell().end_cell();
+    cell second_dictionary = begin_cell().end_cell();
 
-    var (_, stack) = invoke_method(gcd, [1048574,524287]);
-    [int data] = stack;
-    
-    throw_if(200, data != expected_result );
-
-    return 10;
-}
-
-_ __test_gcd_7() {
-    var expected_result = 1;
-
-    var (_, stack) = invoke_method(gcd, [1048573,524280]);
-    [int data] = stack;
-    
-    throw_if(200, data != expected_result );
+    var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
+    [cell first, cell second] = stack;
 
     return 10;
 }
 
-_ __test_gcd_8() {
-    var expected_result = 33;
+_ test_merge_hashmaps_7() {
+    cell first_dictionary = begin_cell().end_cell();
+    cell second_dictionary = begin_cell().end_cell();
 
-    var (_, stack) = invoke_method(gcd, [891,3993]);
-    [int data] = stack;
-    
-    throw_if(200, data != expected_result );
+    var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
+    [cell first, cell second] = stack;
 
     return 10;
 }
 
-_ __test_gcd_9() {
-    var expected_result = 420;
+_ test_merge_hashmaps_8() {
+    cell first_dictionary = begin_cell().end_cell();
+    cell second_dictionary = begin_cell().end_cell();
 
-    var (_, stack) = invoke_method(gcd, [4200,3780]);
-    [int data] = stack;
-    
-    throw_if(200, data != expected_result );
+    var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
+    [cell first, cell second] = stack;
 
     return 15;
 }
 
-_ __test_gcd_10() {
-    var expected_result = 252;
+_ test_merge_hashmaps_9() {
+    cell first_dictionary = begin_cell().end_cell();
+    cell second_dictionary = begin_cell().end_cell();
 
-    var (_, stack) = invoke_method(gcd, [3780,3528]);
-    [int data] = stack;
-    
-    throw_if(200, data != expected_result );
+    var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
+    [cell first, cell second] = stack;
 
     return 15;
 }
 
-_ __test_gcd_total_points(){
+_ test_merge_hashmaps_10() {
+    cell first_dictionary = begin_cell().end_cell();
+    cell second_dictionary = begin_cell().end_cell();
+
+    var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
+    [cell first, cell second] = stack;
+
+    return 15;
+}
+
+
+_ __test_merge_hashmaps_total_points(){
     var total_result = 0;
 
-    var (code, _, stack) = invoke_method_full(__test_gcd_1, []);
+    var (code, _, stack) = invoke_method_full(test_merge_hashmaps_1, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_2, []);
+    var (code, _, stack) = invoke_method_full(test_merge_hashmaps_2, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_3, []);
+    var (code, _, stack) = invoke_method_full(test_merge_hashmaps_3, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_4, []);
+    var (code, _, stack) = invoke_method_full(test_merge_hashmaps_4, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_5, []);
+    var (code, _, stack) = invoke_method_full(test_merge_hashmaps_5, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_6, []);
+    var (code, _, stack) = invoke_method_full(test_merge_hashmaps_6, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_7, []);
+    var (code, _, stack) = invoke_method_full(test_merge_hashmaps_7, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_8, []);
+    var (code, _, stack) = invoke_method_full(test_merge_hashmaps_8, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_9, []);
+    var (code, _, stack) = invoke_method_full(test_merge_hashmaps_9, []);
     total_result += (code != 0) ? 0 : stack.first();
-    var (code, _, stack) = invoke_method_full(__test_gcd_10, []);
+    var (code, _, stack) = invoke_method_full(test_merge_hashmaps_10, []);
     total_result += (code != 0) ? 0 : stack.first();
     
     return total_result;
 }
-
