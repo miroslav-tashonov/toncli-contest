@@ -1,3 +1,5 @@
+const slice addr1 = "Ef80UXx731GHxVr0-LYf3DIViMerdo3uJLAG3ykQZFjXz2kW"a;
+
 _ test_encode_address_1() {
     slice address = begin_cell().end_cell().begin_parse();
     cell second_dictionary = begin_cell().end_cell();
@@ -101,7 +103,6 @@ _ test_encode_address_10() {
 
 _ __test_encode_address_total_points(){
     var total_result = 0;
-
     var (code, _, stack) = invoke_method_full(test_encode_address_1, []);
     total_result += (code != 0) ? 0 : stack.first();
     var (code, _, stack) = invoke_method_full(test_encode_address_2, []);

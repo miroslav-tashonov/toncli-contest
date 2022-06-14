@@ -1,5 +1,5 @@
 _ test_gcd_1() {
-    var expected_result = 2;
+    var expected_result = 1;
     var (_, stack) = invoke_method(gcd, [1,1]);
     [int data] = stack;
 

@@ -31,10 +31,12 @@ def runtests(filename):
         shutil.unpack_archive(f'../participant-files/{filename}', f'{extract_path}/func-contest-files/func')
 
         os.chdir(f'{extract_path}/func-contest-files')
-        for i in range(1, 2):
+        for i in range(1, 6):
             test_result = os.popen(f'toncli run_tests -c contest-{i}').read()
             index = test_result.find('Test result:')
             score = test_result[index+20:index+24]
+            score.replace("]","")
+            score.replace(" ","")
             result_string += f'TASK {i} - {task_names[i-1]} score is : {score}/100 \n'
         
         os.chdir('../../../api')
