@@ -1,6 +1,7 @@
-int equal_slices (slice a, slice b) asm "SDEQ";_ 
+int equal_slices (slice a, slice b) asm "SDEQ";
+forall X -> int is_null(X x) asm "ISNULL";
 
-test_validate_message_1() {
+_ test_validate_message_1() {
     var expected_code = -1;
     cell message = generate_internal_message(0, 1000, begin_cell().store_ref(begin_cell().store_uint(1,256).end_cell()));
     var (_, stack) = invoke_method(validate_message, [message]);
@@ -11,8 +12,8 @@ test_validate_message_1() {
     throw_if(200, code != expected_code );
 
     tuple return_tuple = stack.second();
-    throw_if(200, equal_slices(return_tuple.first(), src) != -1 );
-    throw_if(200, equal_slices(return_tuple.second(), dest) != -1 );
+    throw_if(200, ~ equal_slices(return_tuple.first(), src));
+    throw_if(200, ~ equal_slices(return_tuple.second(), dest));
     throw_if(200, return_tuple.third() != amount );
 
 
@@ -30,8 +31,8 @@ _ test_validate_message_2() {
     throw_if(200, code != expected_code );
 
     tuple return_tuple = stack.second();
-    throw_if(200, equal_slices(return_tuple.first(), src) != -1 );
-    throw_if(200, equal_slices(return_tuple.second(), dest) != -1 );
+    throw_if(200, ~ equal_slices(return_tuple.first(), src));
+    throw_if(200, ~ equal_slices(return_tuple.second(), dest));
     throw_if(200, return_tuple.third() != amount );
 
 
@@ -49,9 +50,9 @@ _ test_validate_message_3() {
     throw_if(200, code != expected_code );
 
     tuple return_tuple = stack.second();
-    throw_if(200, equal_slices(return_tuple.first(), src) != -1 );
-    throw_if(200, equal_slices(return_tuple.second(), dest) != -1 );
-    throw_if(200, return_tuple.third() == null() );
+    throw_if(200, ~ equal_slices(return_tuple.first(), src));
+    throw_if(200, ~ equal_slices(return_tuple.second(), dest));
+    throw_if(200, ~ is_null(return_tuple.third()) );
 
     return 10;
 }
@@ -67,9 +68,9 @@ _ test_validate_message_4() {
     throw_if(200, code != expected_code );
 
     tuple return_tuple = stack.second();
-    throw_if(200, equal_slices(return_tuple.first(), src) != -1 );
-    throw_if(200, equal_slices(return_tuple.second(), dest) != -1 );
-    throw_if(200, return_tuple.third() == null() );
+    throw_if(200, ~ equal_slices(return_tuple.first(), src));
+    throw_if(200, ~ equal_slices(return_tuple.second(), dest));
+    throw_if(200, ~ is_null(return_tuple.third()) );
 
     return 10;
 }
@@ -85,9 +86,9 @@ _ test_validate_message_5() {
     throw_if(200, code != expected_code );
 
     tuple return_tuple = stack.second();
-    throw_if(200, equal_slices(return_tuple.first(), src) != -1 );
-    throw_if(200, equal_slices(return_tuple.second(), dest) != -1 );
-    throw_if(200, return_tuple.third() == null() );
+    throw_if(200, ~ equal_slices(return_tuple.first(), src));
+    throw_if(200, ~ equal_slices(return_tuple.second(), dest));
+    throw_if(200, ~ is_null(return_tuple.third()) );
 
     return 10;
 }
@@ -104,9 +105,9 @@ _ test_validate_message_6() {
     throw_if(200, code != expected_code );
 
     tuple return_tuple = stack.second();
-    throw_if(200, equal_slices(return_tuple.first(), src) != -1 );
-    throw_if(200, return_tuple.second() == null() );
-    throw_if(200, return_tuple.third() == null() );
+    throw_if(200, ~ equal_slices(return_tuple.first(), src));
+    throw_if(200, ~ is_null(return_tuple.second()) );
+    throw_if(200, ~ is_null(return_tuple.third()) );
 
     return 15;
 }
@@ -123,9 +124,9 @@ _ test_validate_message_7() {
     throw_if(200, code != expected_code );
 
     tuple return_tuple = stack.second();
-    throw_if(200, return_tuple.first() == null() );
-    throw_if(200, equal_slices(return_tuple.second(), dest) != -1  );
-    throw_if(200, return_tuple.third() == null() );
+    throw_if(200, ~ is_null(return_tuple.first()));
+    throw_if(200, ~ equal_slices(return_tuple.second(), dest));
+    throw_if(200, ~ is_null(return_tuple.third()));
 
     return 15;
 }
@@ -133,38 +134,63 @@ _ test_validate_message_7() {
 _ test_validate_message_8() {
     var expected_code = 0;
 
-    ;;set as null value
-    cell message = begin_cell().end_cell();
+    slice invalid_slice = begin_cell().store_uint(2,32).end_cell().begin_parse();
+
+    cell message = begin_cell().store_slice(invalid_slice).end_cell();
     var (_, stack) = invoke_method(validate_message, [message]);
 
     throw_if(200, stack.first() != expected_code );
-    throw_if(200, stack.second() == null() );
+    throw_if(200, ~ is_null(stack.second()));
 
     return 5;
 }
 
 _ test_validate_message_9() {
-    var expected_code = 0;
+    var expected_code = -1;
 
-    ;;todo
-    cell message = begin_cell().end_cell();
+    slice sdest = generate_external_address(256);
+
+    var message = begin_cell()
+            .store_uint(3, 2) ;;ext_out_msg_info$11
+            .store_slice(null()) ;; src:MsgAddressExt
+            .store_slice(sdest) ;; dest:MsgAddressExt
+            .store_uint(1000, 64) ;; created_lt:uint64
+            .store_uint(1000, 32) ;; created_at:uint32
+            .store_uint(0, 1); ;; no init_state
+    
     var (_, stack) = invoke_method(validate_message, [message]);
 
-    throw_if(200, stack.first() != expected_code );
-    throw_if(200, stack.second() == null() );
+    var code = stack.first();
+    throw_if(200, code != expected_code );
+
+    tuple return_tuple = stack.second();
+    throw_if(200, ~ is_null(return_tuple.first()));
+    throw_if(200, ~ equal_slices(return_tuple.second(), sdest) );
+    throw_if(200, ~ is_null(return_tuple.third()) );
 
     return 5;
 }
 
 _ test_validate_message_10() {
-    var expected_code = 0;
+    var expected_code = -1;
 
-    ;;todo
-    cell message = begin_cell().end_cell();
+    var message = begin_cell()
+            .store_uint(3, 2) ;;ext_out_msg_info$11
+            .store_slice(null()) ;; src:MsgAddressExt
+            .store_slice(null()) ;; dest:MsgAddressExt
+            .store_uint(1000, 64) ;; created_lt:uint64
+            .store_uint(1000, 32) ;; created_at:uint32
+            .store_uint(0, 1); ;; no init_state
+            
     var (_, stack) = invoke_method(validate_message, [message]);
 
-    throw_if(200, stack.first() != expected_code );
-    throw_if(200, stack.second() == null() );
+    var code = stack.first();
+    throw_if(200, code != expected_code );
+
+    tuple return_tuple = stack.second();
+    throw_if(200, ~ is_null(return_tuple.first()));
+    throw_if(200, ~ is_null(return_tuple.second()) );
+    throw_if(200, ~ is_null(return_tuple.third()) );
 
     return 10;
 }

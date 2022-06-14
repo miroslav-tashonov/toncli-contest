@@ -35,8 +35,8 @@ def runtests(filename):
             test_result = os.popen(f'toncli run_tests -c contest-{i}').read()
             index = test_result.find('Test result:')
             score = test_result[index+20:index+24]
-            score.replace("]","")
-            score.replace(" ","")
+            score = score.replace("]","")
+            score = score.replace(" ","")
             result_string += f'TASK {i} - {task_names[i-1]} score is : {score}/100 \n'
         
         os.chdir('../../../api')
