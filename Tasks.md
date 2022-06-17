@@ -3,6 +3,10 @@ Each get method execution is limited by 100 000 000 (hundred millions) of gas un
 The participant can send solutions and receive the result after short evaluation delay any number of times, but not more than 5 times per hour. The best submitted solution (with highest total score over all 5 tasks) will be used to determine final rank.
 The organizers of the competition reserve the right to publish participants solutions with usernames (decided by participants themselves) after the contest.
 
+Solution should only contain 5 files: 1.func, 2.func, 3.func, 4.func and 5.func.
+
+In the same directory with contestant solutions stdlib.fc (from [ton-blochcain repository](https://github.com/ton-blockchain/ton/blob/master/crypto/smartcont/stdlib.fc)) and `typehelpers.func` (see below all tasks) will be presented. Contestants are welcome to `include` those files (note that functions declared in solution should not overwrite those in stdlib and typehelpers.func)
+
 Gas-usage will not affect the ranking. Signatures of all functions described in the task conditions should not be changed.
 
 1.
@@ -63,16 +67,7 @@ Gas-usage will not affect the ranking. Signatures of all functions described in 
   return origin tuple.
   
 -}
-forall X -> (tuple, X) ~tpop(tuple t) asm "TPOP";
-forall X -> int is_null(X x) asm "ISNULL";
-forall X -> int is_int(X x) asm "<{ TRY:<{ 0 PUSHINT ADD DROP -1 PUSHINT }>CATCH<{ 2DROP 0 PUSHINT }> }>CONT 1 1 CALLXARGS";
-forall X -> int is_cell(X x) asm "<{ TRY:<{ CTOS DROP -1 PUSHINT }>CATCH<{ 2DROP 0 PUSHINT }> }>CONT 1 1 CALLXARGS";
-forall X -> int is_slice(X x) asm "<{ TRY:<{ SBITS DROP -1 PUSHINT }>CATCH<{ 2DROP 0 PUSHINT }> }>CONT 1 1 CALLXARGS";
-forall X -> int is_tuple(X x) asm "ISTUPLE";
-forall X -> cell force_cast_to_cell(X x) asm "NOP";
-forall X -> slice force_cast_to_slice(X x) asm "NOP";
-forall X -> int force_cast_to_int(X x) asm "NOP";
-forall X -> tuple force_cast_to_tuple(X x) asm "NOP";
+
 
 () recv_internal() {
 }
@@ -123,4 +118,19 @@ forall X -> tuple force_cast_to_tuple(X x) asm "NOP";
 (slice) encode_address(slice Address) method_id {
 }
 
+```
+
+
+**typehelpers.func**
+```
+forall X -> (tuple, X) ~tpop(tuple t) asm "TPOP";
+forall X -> int is_null(X x) asm "ISNULL";
+forall X -> int is_int(X x) asm "<{ TRY:<{ 0 PUSHINT ADD DROP -1 PUSHINT }>CATCH<{ 2DROP 0 PUSHINT }> }>CONT 1 1 CALLXARGS";
+forall X -> int is_cell(X x) asm "<{ TRY:<{ CTOS DROP -1 PUSHINT }>CATCH<{ 2DROP 0 PUSHINT }> }>CONT 1 1 CALLXARGS";
+forall X -> int is_slice(X x) asm "<{ TRY:<{ SBITS DROP -1 PUSHINT }>CATCH<{ 2DROP 0 PUSHINT }> }>CONT 1 1 CALLXARGS";
+forall X -> int is_tuple(X x) asm "ISTUPLE";
+forall X -> cell force_cast_to_cell(X x) asm "NOP";
+forall X -> slice force_cast_to_slice(X x) asm "NOP";
+forall X -> int force_cast_to_int(X x) asm "NOP";
+forall X -> tuple force_cast_to_tuple(X x) asm "NOP";
 ```
