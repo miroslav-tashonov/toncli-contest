@@ -1,0 +1,126 @@
+Each task is scored from 0 to 100 points depending on number of passed tests.
+Each get method execution is limited by 100 000 000 (hundred millions) of gas units.
+The participant can send solutions and receive the result after short evaluation delay any number of times, but not more than 5 times per hour. The best submitted solution (with highest total score over all 5 tasks) will be used to determine final rank.
+The organizers of the competition reserve the right to publish participants solutions with usernames (decided by participants themselves) after the contest.
+
+Gas-usage will not affect the ranking. Signatures of all functions described in the task conditions should not be changed.
+
+1.
+```
+{-
+
+  TASK 1 - Greatest common divisor
+  Write the method that calculates greater common divisor for two integers greater 
+  or equal to 1 and less than 1048576.
+-}
+
+() recv_internal() {
+}
+
+(int) gcd(int a, int b) method_id {
+}
+```
+2.
+```
+{-
+
+  TASK 2 - Message validation.
+  Write the method that checks that cell contains valid message
+  in accordance to https://github.com/ton-blockchain/ton/blob/master/crypto/block/block.tlb#L155
+  Note, tests will only cover valid and invalid MessageAny objects,
+  valid MessageRelaxed (which are not simultaneously MessageAny) will not be presented
+  If message is invalid for any reason - method should return (0, null), otherwise 
+  it should return (-1, [slice src, slice dest, int amount] ), where src, dest and 
+  amount represents source of the message, destination of the message and attached 
+  amount of TONs. If any of those values are not presented (or presented as 
+  addr_none slice) in the message cell - they should be substituted with null.
+  It is guaranteed that for all tests any HashmapE datatype in message structure 
+  is empty hashmaps (has hme_empty constructor).
+-}
+
+() recv_internal() {
+}
+
+(int, tuple) validate_message(cell message) method_id {
+}
+
+```
+3.
+```
+{-
+
+  TASK 3 - (De)Serialize to Cell
+  Write the methods
+    a) for serialization of tuple of arbitrary values of different types to Cell
+	b) for deserialization of Cell created by method above to original tuple
+  
+  `serialize` method gets as input tuple with arbitrary number of elements from 0 
+  to 128 (both 0 and 128 elements are allowed) and outputs Cell. Elements of the 
+  tuple may be `null`, `int`, `cell`, `slice`, `tuple` (with the same limitations 
+  as original tuple). It is guaranteed that the maximum nesting level of tuples 
+  is less than 4 and total number of elements less than 1024.
+  `deserialize` method gets a cell produced by `serialize` method and should 
+  return origin tuple.
+  
+-}
+forall X -> (tuple, X) ~tpop(tuple t) asm "TPOP";
+forall X -> int is_null(X x) asm "ISNULL";
+forall X -> int is_int(X x) asm "<{ TRY:<{ 0 PUSHINT ADD DROP -1 PUSHINT }>CATCH<{ 2DROP 0 PUSHINT }> }>CONT 1 1 CALLXARGS";
+forall X -> int is_cell(X x) asm "<{ TRY:<{ CTOS DROP -1 PUSHINT }>CATCH<{ 2DROP 0 PUSHINT }> }>CONT 1 1 CALLXARGS";
+forall X -> int is_slice(X x) asm "<{ TRY:<{ SBITS DROP -1 PUSHINT }>CATCH<{ 2DROP 0 PUSHINT }> }>CONT 1 1 CALLXARGS";
+forall X -> int is_tuple(X x) asm "ISTUPLE";
+forall X -> cell force_cast_to_cell(X x) asm "NOP";
+forall X -> slice force_cast_to_slice(X x) asm "NOP";
+forall X -> int force_cast_to_int(X x) asm "NOP";
+forall X -> tuple force_cast_to_tuple(X x) asm "NOP";
+
+() recv_internal() {
+}
+
+(cell) serialize(tuple values) method_id {
+}
+
+(tuple) deserialize(cell serialized) method_id {
+}
+
+```
+4.
+```
+{-
+
+  TASK 4 - Merge hashmaps (dictionaries)
+  Write the method that merges two hashmaps into one. When keys of hashmaps 
+  interesect - values from first hashmap should be used, while discarded 
+  key/value pairs should be stored into separate hashmap.
+  Method should return two hashmaps (merged_dict, discared_dict). If any 
+  of resulting hashmaps is empty it should be represented by `null` value.
+  Hashmap key length is 256 bit. Each hashmap has at most 256 elements.
+-}
+
+() recv_internal() {
+}
+
+(cell, cell) merge_hashmaps(cell dict1, cell dict2) method_id {
+}
+
+```
+5.
+
+```
+{-
+
+  TASK 5 - Address encoder
+  Write the method that for any valid MsgAddressInt with addr_std constructor 
+  without anycast
+  (see https://github.com/ton-blockchain/ton/blob/master/crypto/block/block.tlb#L105)
+ returns the slice that contain ASCII encoded base64url user-friendly bouncable 
+ address (without test-only flag), see https://ton.org/docs/#/howto/step-by-step?id=_1-smart-contract-addresses
+-}
+
+() recv_internal() {
+}
+
+(slice) encode_address(slice Address) method_id {
+}
+
+```
