@@ -1,4 +1,4 @@
-Each task is scored from 0 to 10 points depending on number of passed tests.
+Each task is scored from 0 to 100 points depending on number of passed tests.
 Each get method execution is limited by 100 000 000 (hundred millions) of gas units.
 The participant can send solutions and receive the result after short evaluation delay any number of times, but not more than 5 times per hour. The best submitted solution (with highest total score over all 5 tasks) will be used to determine final rank.
 The organizers of the competition reserve the right to publish participants solutions with usernames (decided by participants themselves) after the contest.
