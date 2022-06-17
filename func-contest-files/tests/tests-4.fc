@@ -1,5 +1,5 @@
-int equal_slices (slice a, slice b) asm "SDEQ";
-forall X -> int is_null(X x) asm "ISNULL";
+int equal_slices_unique(slice a, slice b) asm "SDEQ";
+forall X -> int is_null_unique(X x) asm "ISNULL";
 
 _ test_merge_hashmaps_1() {
     ;; ARRANGE
@@ -11,8 +11,8 @@ _ test_merge_hashmaps_1() {
     [cell first, cell second] = stack;
 
     ;;ASSERT
-    throw_if(200, ~ is_null(first));
-    throw_if(200, ~ is_null(second));
+    throw_if(200, ~ is_null_unique(first));
+    throw_if(200, ~ is_null_unique(second));
 
     return 5;
 }
@@ -32,8 +32,8 @@ _ test_merge_hashmaps_2() {
     ;;ASSERT
     (slice to_test, int code) = first.udict_get?(256, 1);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value, to_test));
-    throw_if(200, ~ is_null(second));
+    throw_if(200, ~ equal_slices_unique(test_value, to_test));
+    throw_if(200, ~ is_null_unique(second));
 
     return 5;
 }
@@ -53,8 +53,8 @@ _ test_merge_hashmaps_3() {
     ;;ASSERT
     (slice to_test, int code) = first.udict_get?(256, 1);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value, to_test));
-    throw_if(200, ~ is_null(second));
+    throw_if(200, ~ equal_slices_unique(test_value, to_test));
+    throw_if(200, ~ is_null_unique(second));
 
     return 5;
 }
@@ -78,17 +78,17 @@ _ test_merge_hashmaps_4() {
     ;;ASSERT
     (slice to_test, int code) = second.udict_get?(256, 1);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value, to_test));
+    throw_if(200, ~ equal_slices_unique(test_value, to_test));
 
     (slice to_test, int code) = second.udict_get?(256, 2);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value2, to_test));
+    throw_if(200, ~ equal_slices_unique(test_value2, to_test));
 
     (slice to_test, int code) = second.udict_get?(256, 3);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value3, to_test));
+    throw_if(200, ~ equal_slices_unique(test_value3, to_test));
 
-    throw_if(200, ~ is_null(second));
+    throw_if(200, ~ is_null_unique(second));
 
     return 10;
 }
@@ -109,11 +109,11 @@ _ test_merge_hashmaps_5() {
     ;;ASSERT
     (slice to_test, int code) = first.udict_get?(256, 1);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value, to_test));
+    throw_if(200, ~ equal_slices_unique(test_value, to_test));
 
     (slice to_test, int code) = second.udict_get?(256, 1);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value2, to_test));
+    throw_if(200, ~ equal_slices_unique(test_value2, to_test));
 
     return 10;
 }
@@ -133,10 +133,10 @@ _ test_merge_hashmaps_6() {
     ;;ASSERT
     (slice to_test, int code) = first.udict_get?(256, 1);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value, to_test));
+    throw_if(200, ~ equal_slices_unique(test_value, to_test));
     (slice to_test, int code) = first.udict_get?(256, 2);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value, to_test));
+    throw_if(200, ~ equal_slices_unique(test_value, to_test));
 
     return 10;
 }
@@ -170,12 +170,12 @@ _ test_merge_hashmaps_7() {
     ;; ASSERT
     (int key, slice to_test, int code) = first.udict_get_max?(256);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value, to_test));
+    throw_if(200, ~ equal_slices_unique(test_value, to_test));
     throw_if(200, key != 250);
 
     (int key, slice to_test, int code) = second.udict_get_max?(256);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value2, to_test));
+    throw_if(200, ~ equal_slices_unique(test_value2, to_test));
     throw_if(200, key != 25);
 
     return 10;
@@ -197,10 +197,10 @@ _ test_merge_hashmaps_8() {
 
     (slice to_test, int code) = first.udict_get?(256, 1);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value, to_test));
+    throw_if(200, ~ equal_slices_unique(test_value, to_test));
     (slice to_test, int code) = first.udict_get?(256, 2);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value2, to_test));
+    throw_if(200, ~ equal_slices_unique(test_value2, to_test));
 
     ;;same test as before just different order
     var (_, stack) = invoke_method(merge_hashmaps, [second_dictionary, first_dictionary]);
@@ -209,10 +209,10 @@ _ test_merge_hashmaps_8() {
     ;;ASSERT
     (slice to_test, int code) = first.udict_get?(256, 1);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value, to_test));
+    throw_if(200, ~ equal_slices_unique(test_value, to_test));
     (slice to_test, int code) = first.udict_get?(256, 2);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value2, to_test));
+    throw_if(200, ~ equal_slices_unique(test_value2, to_test));
 
     return 15;
 }
@@ -246,10 +246,10 @@ _ test_merge_hashmaps_9() {
     ;; ASSERT
     (int key, slice to_test, int code) = first.udict_get_max?(256);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value2, to_test));
+    throw_if(200, ~ equal_slices_unique(test_value2, to_test));
     throw_if(200, key != 275);
 
-    throw_if(200, ~ is_null(second));
+    throw_if(200, ~ is_null_unique(second));
 
     ;;same test different order
     var (_, stack) = invoke_method(merge_hashmaps, [second_dictionary, first_dictionary]);
@@ -257,10 +257,10 @@ _ test_merge_hashmaps_9() {
 
     (int key, slice to_test, int code) = first.udict_get_max?(256);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value2, to_test));
+    throw_if(200, ~ equal_slices_unique(test_value2, to_test));
     throw_if(200, key != 275);
 
-    throw_if(200, ~ is_null(second));
+    throw_if(200, ~ is_null_unique(second));
 
     return 15;
 }
@@ -301,12 +301,12 @@ _ test_merge_hashmaps_10() {
     ;; ASSERT
     (int key, slice to_test, int code) = first.udict_get_max?(256);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value2, to_test));
+    throw_if(200, ~ equal_slices_unique(test_value2, to_test));
     throw_if(200, key != 275);
 
     (int key, slice to_test, int code) = second.udict_get_max?(256);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices(test_value2, to_test));
+    throw_if(200, ~ equal_slices_unique(test_value2, to_test));
     throw_if(200, key != 25);
 
     return 15;
