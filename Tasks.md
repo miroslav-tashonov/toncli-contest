@@ -27,6 +27,8 @@ Gas-usage will not affect the ranking. Signatures of all functions described in 
   TASK 2 - Message validation.
   Write the method that checks that cell contains valid message
   in accordance to https://github.com/ton-blockchain/ton/blob/master/crypto/block/block.tlb#L155
+  Note, tests will only cover valid and invalid MessageAny objects,
+  valid MessageRelaxed (which are not simultaneously MessageAny) will not be presented
   If message is invalid for any reason - method should return (0, null), otherwise 
   it should return (-1, [slice src, slice dest, int amount] ), where src, dest and 
   amount represents source of the message, destination of the message and attached 
