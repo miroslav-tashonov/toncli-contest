@@ -1,5 +1,5 @@
-int equal_slices_unique(slice a, slice b) asm "SDEQ";
-forall X -> int is_null_unique(X x) asm "ISNULL";
+int equal_slices_used_for_testing(slice a, slice b) asm "SDEQ";
+forall X -> int is_null_used_for_testing(X x) asm "ISNULL";
 
 _ test_validate_message_1() {
     var expected_code = -1;
@@ -12,8 +12,8 @@ _ test_validate_message_1() {
     throw_if(200, code != expected_code );
 
     tuple return_tuple = stack.second();
-    throw_if(200, ~ equal_slices_unique(return_tuple.first(), src));
-    throw_if(200, ~ equal_slices_unique(return_tuple.second(), dest));
+    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.first(), src));
+    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.second(), dest));
     throw_if(200, return_tuple.third() != amount );
 
 
@@ -31,8 +31,8 @@ _ test_validate_message_2() {
     throw_if(200, code != expected_code );
 
     tuple return_tuple = stack.second();
-    throw_if(200, ~ equal_slices_unique(return_tuple.first(), src));
-    throw_if(200, ~ equal_slices_unique(return_tuple.second(), dest));
+    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.first(), src));
+    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.second(), dest));
     throw_if(200, return_tuple.third() != amount );
 
 
@@ -50,9 +50,9 @@ _ test_validate_message_3() {
     throw_if(200, code != expected_code );
 
     tuple return_tuple = stack.second();
-    throw_if(200, ~ equal_slices_unique(return_tuple.first(), src));
-    throw_if(200, ~ equal_slices_unique(return_tuple.second(), dest));
-    throw_if(200, ~ is_null_unique(return_tuple.third()) );
+    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.first(), src));
+    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.second(), dest));
+    throw_if(200, ~ is_null_used_for_testing(return_tuple.third()) );
 
     return 10;
 }
@@ -68,9 +68,9 @@ _ test_validate_message_4() {
     throw_if(200, code != expected_code );
 
     tuple return_tuple = stack.second();
-    throw_if(200, ~ equal_slices_unique(return_tuple.first(), src));
-    throw_if(200, ~ equal_slices_unique(return_tuple.second(), dest));
-    throw_if(200, ~ is_null_unique(return_tuple.third()) );
+    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.first(), src));
+    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.second(), dest));
+    throw_if(200, ~ is_null_used_for_testing(return_tuple.third()) );
 
     return 10;
 }
@@ -86,9 +86,9 @@ _ test_validate_message_5() {
     throw_if(200, code != expected_code );
 
     tuple return_tuple = stack.second();
-    throw_if(200, ~ equal_slices_unique(return_tuple.first(), src));
-    throw_if(200, ~ equal_slices_unique(return_tuple.second(), dest));
-    throw_if(200, ~ is_null_unique(return_tuple.third()) );
+    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.first(), src));
+    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.second(), dest));
+    throw_if(200, ~ is_null_used_for_testing(return_tuple.third()) );
 
     return 10;
 }
@@ -105,9 +105,9 @@ _ test_validate_message_6() {
     throw_if(200, code != expected_code );
 
     tuple return_tuple = stack.second();
-    throw_if(200, ~ equal_slices_unique(return_tuple.first(), src));
-    throw_if(200, ~ is_null_unique(return_tuple.second()) );
-    throw_if(200, ~ is_null_unique(return_tuple.third()) );
+    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.first(), src));
+    throw_if(200, ~ is_null_used_for_testing(return_tuple.second()) );
+    throw_if(200, ~ is_null_used_for_testing(return_tuple.third()) );
 
     return 15;
 }
@@ -124,9 +124,9 @@ _ test_validate_message_7() {
     throw_if(200, code != expected_code );
 
     tuple return_tuple = stack.second();
-    throw_if(200, ~ is_null_unique(return_tuple.first()));
-    throw_if(200, ~ equal_slices_unique(return_tuple.second(), dest));
-    throw_if(200, ~ is_null_unique(return_tuple.third()));
+    throw_if(200, ~ is_null_used_for_testing(return_tuple.first()));
+    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.second(), dest));
+    throw_if(200, ~ is_null_used_for_testing(return_tuple.third()));
 
     return 15;
 }
@@ -140,7 +140,7 @@ _ test_validate_message_8() {
     var (_, stack) = invoke_method(validate_message, [message]);
 
     throw_if(200, stack.first() != expected_code );
-    throw_if(200, ~ is_null_unique(stack.second()));
+    throw_if(200, ~ is_null_used_for_testing(stack.second()));
 
     return 5;
 }
@@ -164,9 +164,9 @@ _ test_validate_message_9() {
     throw_if(200, code != expected_code );
 
     tuple return_tuple = stack.second();
-    throw_if(200, ~ is_null_unique(return_tuple.first()));
-    throw_if(200, ~ equal_slices_unique(return_tuple.second(), sdest) );
-    throw_if(200, ~ is_null_unique(return_tuple.third()) );
+    throw_if(200, ~ is_null_used_for_testing(return_tuple.first()));
+    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.second(), sdest) );
+    throw_if(200, ~ is_null_used_for_testing(return_tuple.third()) );
 
     return 5;
 }
@@ -188,9 +188,9 @@ _ test_validate_message_10() {
     throw_if(200, code != expected_code );
 
     tuple return_tuple = stack.second();
-    throw_if(200, ~ is_null_unique(return_tuple.first()));
-    throw_if(200, ~ is_null_unique(return_tuple.second()) );
-    throw_if(200, ~ is_null_unique(return_tuple.third()) );
+    throw_if(200, ~ is_null_used_for_testing(return_tuple.first()));
+    throw_if(200, ~ is_null_used_for_testing(return_tuple.second()) );
+    throw_if(200, ~ is_null_used_for_testing(return_tuple.third()) );
 
     return 10;
 }

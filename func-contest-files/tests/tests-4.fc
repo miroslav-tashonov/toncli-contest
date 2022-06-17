@@ -1,5 +1,18 @@
-int equal_slices_unique(slice a, slice b) asm "SDEQ";
-forall X -> int is_null_unique(X x) asm "ISNULL";
+int equal_slices_used_for_testing(slice a, slice b) asm "SDEQ";
+forall X -> int is_null_used_for_testing(X x) asm "ISNULL";
+
+(cell, cell) solve_merge_hashmaps(cell first_dictionary, cell second_dictionary)
+{
+    cell merged_dict = new_dict();
+    cell discard_dict = new_dict();
+
+    if (is_null_used_for_testing(first_dictionary) & is_null_used_for_testing(second_dictionary))
+    {
+        return (null(), null());
+    }
+
+    return (null(), null());
+}
 
 _ test_merge_hashmaps_1() {
     ;; ARRANGE
@@ -8,11 +21,12 @@ _ test_merge_hashmaps_1() {
 
     ;; ACT
     var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
-    [cell first, cell second] = stack;
+    [cell result_first_dictionary, cell result_second_dictionary] = stack;
 
     ;;ASSERT
-    throw_if(200, ~ is_null_unique(first));
-    throw_if(200, ~ is_null_unique(second));
+    (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
+    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary.begin_parse(), correct_second_dictionary.begin_parse()));
 
     return 5;
 }
@@ -27,13 +41,12 @@ _ test_merge_hashmaps_2() {
 
     ;; ACT
     var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
-    [cell first, cell second] = stack;
+    [cell result_first_dictionary, cell result_second_dictionary] = stack;
 
     ;;ASSERT
-    (slice to_test, int code) = first.udict_get?(256, 1);
-    throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value, to_test));
-    throw_if(200, ~ is_null_unique(second));
+    (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
+    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary.begin_parse(), correct_second_dictionary.begin_parse()));
 
     return 5;
 }
@@ -48,13 +61,12 @@ _ test_merge_hashmaps_3() {
 
     ;; ACT
     var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
-    [cell first, cell second] = stack;
+    [cell result_first_dictionary, cell result_second_dictionary] = stack;
 
     ;;ASSERT
-    (slice to_test, int code) = first.udict_get?(256, 1);
-    throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value, to_test));
-    throw_if(200, ~ is_null_unique(second));
+    (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
+    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary.begin_parse(), correct_second_dictionary.begin_parse()));
 
     return 5;
 }
@@ -73,22 +85,12 @@ _ test_merge_hashmaps_4() {
 
     ;; ACT
     var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
-    [cell first, cell second] = stack;
+    [cell result_first_dictionary, cell result_second_dictionary] = stack;
 
     ;;ASSERT
-    (slice to_test, int code) = second.udict_get?(256, 1);
-    throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value, to_test));
-
-    (slice to_test, int code) = second.udict_get?(256, 2);
-    throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value2, to_test));
-
-    (slice to_test, int code) = second.udict_get?(256, 3);
-    throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value3, to_test));
-
-    throw_if(200, ~ is_null_unique(second));
+    (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
+    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary.begin_parse(), correct_second_dictionary.begin_parse()));
 
     return 10;
 }
@@ -104,16 +106,12 @@ _ test_merge_hashmaps_5() {
     second_dictionary~udict_set(256, 1, test_value2);
     ;; ACT
     var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
-    [cell first, cell second] = stack;
+    [cell result_first_dictionary, cell result_second_dictionary] = stack;
 
     ;;ASSERT
-    (slice to_test, int code) = first.udict_get?(256, 1);
-    throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value, to_test));
-
-    (slice to_test, int code) = second.udict_get?(256, 1);
-    throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value2, to_test));
+    (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
+    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary.begin_parse(), correct_second_dictionary.begin_parse()));
 
     return 10;
 }
@@ -128,15 +126,12 @@ _ test_merge_hashmaps_6() {
     second_dictionary~udict_set(256, 2, test_value);
     ;; ACT
     var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
-    [cell first, cell second] = stack;
+    [cell result_first_dictionary, cell result_second_dictionary] = stack;
 
     ;;ASSERT
-    (slice to_test, int code) = first.udict_get?(256, 1);
-    throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value, to_test));
-    (slice to_test, int code) = first.udict_get?(256, 2);
-    throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value, to_test));
+    (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
+    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary.begin_parse(), correct_second_dictionary.begin_parse()));
 
     return 10;
 }
@@ -165,18 +160,12 @@ _ test_merge_hashmaps_7() {
 
     ;; ACT
     var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
-    [cell first, cell second] = stack;
+    [cell result_first_dictionary, cell result_second_dictionary] = stack;
 
-    ;; ASSERT
-    (int key, slice to_test, int code) = first.udict_get_max?(256);
-    throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value, to_test));
-    throw_if(200, key != 250);
-
-    (int key, slice to_test, int code) = second.udict_get_max?(256);
-    throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value2, to_test));
-    throw_if(200, key != 25);
+    ;;ASSERT
+    (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
+    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary.begin_parse(), correct_second_dictionary.begin_parse()));
 
     return 10;
 }
@@ -193,26 +182,20 @@ _ test_merge_hashmaps_8() {
 
     ;;ACT
     var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
-    [cell first, cell second] = stack;
+    [cell result_first_dictionary, cell result_second_dictionary] = stack;
 
-    (slice to_test, int code) = first.udict_get?(256, 1);
-    throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value, to_test));
-    (slice to_test, int code) = first.udict_get?(256, 2);
-    throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value2, to_test));
+    ;;ASSERT
+    (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
+    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary.begin_parse(), correct_second_dictionary.begin_parse()));
 
     ;;same test as before just different order
     var (_, stack) = invoke_method(merge_hashmaps, [second_dictionary, first_dictionary]);
-    [cell first, cell second] = stack;
+    [cell result_first_dictionary, cell result_second_dictionary] = stack;
 
     ;;ASSERT
-    (slice to_test, int code) = first.udict_get?(256, 1);
-    throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value, to_test));
-    (slice to_test, int code) = first.udict_get?(256, 2);
-    throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value2, to_test));
+    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary.begin_parse(), correct_second_dictionary.begin_parse()));
 
     return 15;
 }
@@ -241,26 +224,19 @@ _ test_merge_hashmaps_9() {
 
     ;; ACT
     var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
-    [cell first, cell second] = stack;
+    [cell result_first_dictionary, cell result_second_dictionary] = stack;
 
-    ;; ASSERT
-    (int key, slice to_test, int code) = first.udict_get_max?(256);
-    throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value2, to_test));
-    throw_if(200, key != 275);
-
-    throw_if(200, ~ is_null_unique(second));
+    ;;ASSERT
+    (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
+    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary.begin_parse(), correct_second_dictionary.begin_parse()));
 
     ;;same test different order
     var (_, stack) = invoke_method(merge_hashmaps, [second_dictionary, first_dictionary]);
-    [cell first, cell second] = stack;
+    [cell result_first_dictionary, cell result_second_dictionary] = stack;
 
-    (int key, slice to_test, int code) = first.udict_get_max?(256);
-    throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value2, to_test));
-    throw_if(200, key != 275);
-
-    throw_if(200, ~ is_null_unique(second));
+    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary.begin_parse(), correct_second_dictionary.begin_parse()));
 
     return 15;
 }
@@ -301,12 +277,12 @@ _ test_merge_hashmaps_10() {
     ;; ASSERT
     (int key, slice to_test, int code) = first.udict_get_max?(256);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value2, to_test));
+    throw_if(200, ~ equal_slices_used_for_testing(test_value2, to_test));
     throw_if(200, key != 275);
 
     (int key, slice to_test, int code) = second.udict_get_max?(256);
     throw_if(200, code != -1);
-    throw_if(200, ~ equal_slices_unique(test_value2, to_test));
+    throw_if(200, ~ equal_slices_used_for_testing(test_value2, to_test));
     throw_if(200, key != 25);
 
     return 15;

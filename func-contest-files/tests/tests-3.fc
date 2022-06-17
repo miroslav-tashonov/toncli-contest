@@ -1,58 +1,58 @@
-forall X -> (tuple, X) ~tpop_unique(tuple t) asm "TPOP";
-forall X -> int is_null_unique(X x) asm "ISNULL";
-forall X -> int is_int_unique(X x) asm "<{ TRY:<{ 0 PUSHINT ADD DROP -1 PUSHINT }>CATCH<{ 2DROP 0 PUSHINT }> }>CONT 1 1 CALLXARGS";
-forall X -> int is_cell_unique(X x) asm "<{ TRY:<{ CTOS DROP -1 PUSHINT }>CATCH<{ 2DROP 0 PUSHINT }> }>CONT 1 1 CALLXARGS";
-forall X -> int is_slice_unique(X x) asm "<{ TRY:<{ SBITS DROP -1 PUSHINT }>CATCH<{ 2DROP 0 PUSHINT }> }>CONT 1 1 CALLXARGS";
-forall X -> int is_tuple_unique(X x) asm "ISTUPLE";
-forall X -> cell force_cast_to_cell_unique(X x) asm "NOP";
-forall X -> slice force_cast_to_slice_unique(X x) asm "NOP";
-forall X -> int force_cast_to_int_unique(X x) asm "NOP";
-forall X -> tuple force_cast_to_tuple_unique(X x) asm "NOP";
+forall X -> (tuple, X) ~tpop_used_for_testing(tuple t) asm "TPOP";
+forall X -> int is_null_used_for_testing(X x) asm "ISNULL";
+forall X -> int is_int_used_for_testing(X x) asm "<{ TRY:<{ 0 PUSHINT ADD DROP -1 PUSHINT }>CATCH<{ 2DROP 0 PUSHINT }> }>CONT 1 1 CALLXARGS";
+forall X -> int is_cell_used_for_testing(X x) asm "<{ TRY:<{ CTOS DROP -1 PUSHINT }>CATCH<{ 2DROP 0 PUSHINT }> }>CONT 1 1 CALLXARGS";
+forall X -> int is_slice_used_for_testing(X x) asm "<{ TRY:<{ SBITS DROP -1 PUSHINT }>CATCH<{ 2DROP 0 PUSHINT }> }>CONT 1 1 CALLXARGS";
+forall X -> int is_tuple_used_for_testing(X x) asm "ISTUPLE";
+forall X -> cell force_cast_to_cell_used_for_testing(X x) asm "NOP";
+forall X -> slice force_cast_to_slice_used_for_testing(X x) asm "NOP";
+forall X -> int force_cast_to_int_used_for_testing(X x) asm "NOP";
+forall X -> tuple force_cast_to_tuple_used_for_testing(X x) asm "NOP";
 
-int tuple_length_unique(tuple t) asm "TLEN";
-int equal_slices_unique(slice a, slice b) asm "SDEQ";
+int tuple_length_used_for_testing(tuple t) asm "TLEN";
+int equal_slices_used_for_testing(slice a, slice b) asm "SDEQ";
 
 () test_tuples(tuple to_test_tuple, tuple deserialize_result) impure method_id
 {
-    repeat(to_test_tuple.tuple_length_unique())
+    repeat(to_test_tuple.tuple_length_used_for_testing())
     {
-        var initial = to_test_tuple~tpop_unique();
-        var result = deserialize_result~tpop_unique();
+        var initial = to_test_tuple~tpop_used_for_testing();
+        var result = deserialize_result~tpop_used_for_testing();
 
-        if(is_null_unique(initial))
+        if(is_null_used_for_testing(initial))
         {
-            throw_if(200, ~ is_null_unique(result));
+            throw_if(200, ~ is_null_used_for_testing(result));
         }
         else
         {
-            if(is_int_unique(initial)){
-                int integer1 = force_cast_to_int_unique(initial);
-                int integer2 = force_cast_to_int_unique(result);
+            if(is_int_used_for_testing(initial)){
+                int integer1 = force_cast_to_int_used_for_testing(initial);
+                int integer2 = force_cast_to_int_used_for_testing(result);
 
                 throw_if(200, integer1 != integer2);
             }
             else 
             {
-                if(is_cell_unique(initial))
+                if(is_cell_used_for_testing(initial))
                 {
-                    cell imp1 = force_cast_to_cell_unique(initial);
-                    cell imp2 = force_cast_to_cell_unique(result);
+                    cell imp1 = force_cast_to_cell_used_for_testing(initial);
+                    cell imp2 = force_cast_to_cell_used_for_testing(result);
 
-                    throw_if(200, ~ equal_slices_unique(imp1.begin_parse(), imp2.begin_parse()));
+                    throw_if(200, ~ equal_slices_used_for_testing(imp1.begin_parse(), imp2.begin_parse()));
                 }
                 else
                 {
-                    if(is_slice_unique(initial))
+                    if(is_slice_used_for_testing(initial))
                     {
-                        slice s1 = force_cast_to_slice_unique(initial);
-                        slice s2 = force_cast_to_slice_unique(result);
+                        slice s1 = force_cast_to_slice_used_for_testing(initial);
+                        slice s2 = force_cast_to_slice_used_for_testing(result);
 
-                        throw_if(200, ~ equal_slices_unique(s1, s2));
+                        throw_if(200, ~ equal_slices_used_for_testing(s1, s2));
                     }
                     else
                     {
-                        tuple s1 = force_cast_to_tuple_unique(initial);
-                        tuple s2 = force_cast_to_tuple_unique(result);
+                        tuple s1 = force_cast_to_tuple_used_for_testing(initial);
+                        tuple s2 = force_cast_to_tuple_used_for_testing(result);
 
                         test_tuples(s1, s2);
                     }
@@ -198,7 +198,7 @@ _ test_serializers_1() {
     
     var (_, stack) = invoke_method(serialize, [to_test_tuple]);
     var serialize_result = stack.first();
-    throw_if(200, ~ is_cell_unique(serialize_result));
+    throw_if(200, ~ is_cell_used_for_testing(serialize_result));
 
     var (_, stack) = invoke_method(deserialize, [serialize_result]);
     [tuple deserialize_result] = stack;
@@ -213,7 +213,7 @@ _ test_serializers_2() {
     
     var (_, stack) = invoke_method(serialize, [to_test_tuple]);
     var serialize_result = stack.first();
-    throw_if(200, ~ is_cell_unique(serialize_result));
+    throw_if(200, ~ is_cell_used_for_testing(serialize_result));
 
     var (_, stack) = invoke_method(deserialize, [serialize_result]);
     [tuple deserialize_result] = stack;
@@ -228,7 +228,7 @@ _ test_serializers_3() {
     
     var (_, stack) = invoke_method(serialize, [to_test_tuple]);
     var serialize_result = stack.first();
-    throw_if(200, ~ is_cell_unique(serialize_result));
+    throw_if(200, ~ is_cell_used_for_testing(serialize_result));
 
     var (_, stack) = invoke_method(deserialize, [serialize_result]);
     [tuple deserialize_result] = stack;
@@ -243,7 +243,7 @@ _ test_serializers_4() {
     
     var (_, stack) = invoke_method(serialize, [to_test_tuple]);
     var serialize_result = stack.first();
-    throw_if(200, ~ is_cell_unique(serialize_result));
+    throw_if(200, ~ is_cell_used_for_testing(serialize_result));
 
     var (_, stack) = invoke_method(deserialize, [serialize_result]);
     [tuple deserialize_result] = stack;
@@ -258,7 +258,7 @@ _ test_serializers_5() {
     
     var (_, stack) = invoke_method(serialize, [to_test_tuple]);
     var serialize_result = stack.first();
-    throw_if(200, ~ is_cell_unique(serialize_result));
+    throw_if(200, ~ is_cell_used_for_testing(serialize_result));
 
     var (_, stack) = invoke_method(deserialize, [serialize_result]);
     [tuple deserialize_result] = stack;
@@ -273,7 +273,7 @@ _ test_serializers_6() {
     
     var (_, stack) = invoke_method(serialize, [to_test_tuple]);
     var serialize_result = stack.first();
-    throw_if(200, ~ is_cell_unique(serialize_result));
+    throw_if(200, ~ is_cell_used_for_testing(serialize_result));
 
     var (_, stack) = invoke_method(deserialize, [serialize_result]);
     [tuple deserialize_result] = stack;
@@ -288,7 +288,7 @@ _ test_serializers_7() {
     
     var (_, stack) = invoke_method(serialize, [to_test_tuple]);
     var serialize_result = stack.first();
-    throw_if(200, ~ is_cell_unique(serialize_result));
+    throw_if(200, ~ is_cell_used_for_testing(serialize_result));
 
     var (_, stack) = invoke_method(deserialize, [serialize_result]);
     [tuple deserialize_result] = stack;
@@ -303,7 +303,7 @@ _ test_serializers_8() {
     
     var (_, stack) = invoke_method(serialize, [to_test_tuple]);
     var serialize_result = stack.first();
-    throw_if(200, ~ is_cell_unique(serialize_result));
+    throw_if(200, ~ is_cell_used_for_testing(serialize_result));
 
     var (_, stack) = invoke_method(deserialize, [serialize_result]);
     [tuple deserialize_result] = stack;
@@ -317,7 +317,7 @@ _ test_serializers_9() {
     var to_test_tuple = get_test_tuple_9();
     var (_, stack) = invoke_method(serialize, [to_test_tuple]);
     var serialize_result = stack.first();
-    throw_if(200, ~ is_cell_unique(serialize_result));
+    throw_if(200, ~ is_cell_used_for_testing(serialize_result));
 
     var (_, stack) = invoke_method(deserialize, [serialize_result]);
     [tuple deserialize_result] = stack;
@@ -332,7 +332,7 @@ _ test_serializers_10() {
     
     var (_, stack) = invoke_method(serialize, [to_test_tuple]);
     var serialize_result = stack.first();
-    throw_if(200, ~ is_cell_unique(serialize_result));
+    throw_if(200, ~ is_cell_used_for_testing(serialize_result));
 
     var (_, stack) = invoke_method(deserialize, [serialize_result]);
     [tuple deserialize_result] = stack;
