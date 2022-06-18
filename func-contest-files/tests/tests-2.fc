@@ -58,21 +58,24 @@ _ test_validate_message_3() {
 }
 
 _ test_validate_message_4() {
-    var expected_code = -1;
-    cell message = generate_external_out_message(256, begin_cell().store_ref(begin_cell().store_uint(1,256).end_cell()));
+    var expected_code = 0;
+
+    slice sdest = generate_empty_address();
+
+    var message = begin_cell()
+            .store_uint(3, 2) ;;ext_out_msg_info$11
+            .store_int(100000, 32) ;; src:INVALID
+            .store_slice(sdest) ;; dest:MsgAddressExt
+            .store_uint(1000, 64) ;; created_lt:uint64
+            .store_uint(1000, 32) ;; created_at:uint32
+            .store_uint(0, 1); ;; no init_state
+
     var (_, stack) = invoke_method(validate_message, [message]);
 
-    var [slice src, slice dest, _, _, _, _] = parse_external_message(message);
+    throw_if(200, stack.first() != expected_code );
+    throw_if(200, ~ is_null_used_for_testing(stack.second()));
 
-    var code = stack.first();
-    throw_if(200, code != expected_code );
-
-    tuple return_tuple = stack.second();
-    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.first(), src));
-    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.second(), dest));
-    throw_if(200, ~ is_null_used_for_testing(return_tuple.third()) );
-
-    return 10;
+    return 5;
 }
 
 _ test_validate_message_5() {
@@ -148,11 +151,12 @@ _ test_validate_message_8() {
 _ test_validate_message_9() {
     var expected_code = -1;
 
+    slice ssrc = generate_empty_address();
     slice sdest = generate_external_address(256);
 
     var message = begin_cell()
             .store_uint(3, 2) ;;ext_out_msg_info$11
-            .store_slice(null()) ;; src:MsgAddressExt
+            .store_slice(ssrc) ;; src:MsgAddressExt
             .store_slice(sdest) ;; dest:MsgAddressExt
             .store_uint(1000, 64) ;; created_lt:uint64
             .store_uint(1000, 32) ;; created_at:uint32
@@ -174,13 +178,17 @@ _ test_validate_message_9() {
 _ test_validate_message_10() {
     var expected_code = -1;
 
+    slice ssrc = generate_empty_address();
+    slice sdest = generate_empty_address();
+
     var message = begin_cell()
             .store_uint(3, 2) ;;ext_out_msg_info$11
-            .store_slice(null()) ;; src:MsgAddressExt
-            .store_slice(null()) ;; dest:MsgAddressExt
+            .store_slice(ssrc) ;; src:MsgAddressExt
+            .store_slice(sdest) ;; dest:MsgAddressExt
             .store_uint(1000, 64) ;; created_lt:uint64
             .store_uint(1000, 32) ;; created_at:uint32
-            .store_uint(0, 1); ;; no init_state
+            .store_uint(0, 1) ;; no init_state
+            .end_cell();
             
     var (_, stack) = invoke_method(validate_message, [message]);
 
@@ -194,6 +202,72 @@ _ test_validate_message_10() {
 
     return 10;
 }
+
+_ test_validate_message_11() {
+    var expected_code = 0;
+    slice sdest = generate_empty_address();
+
+    var message = begin_cell()
+            .store_uint(3, 2) ;;ext_out_msg_info$11
+            .store_int(100000, 32) ;; src:INVALID
+            .store_slice(sdest) ;; dest:MsgAddressExt
+            .end_cell();
+
+    var (_, stack) = invoke_method(validate_message, [message]);
+
+    throw_if(200, stack.first() != expected_code );
+    throw_if(200, ~ is_null_used_for_testing(stack.second()));
+
+    return 5;
+}
+
+_ test_validate_message_12() {
+    var expected_code = 0;
+    slice ssrc = generate_empty_address();
+
+    var message = begin_cell()
+            .store_uint(3, 2) ;;ext_out_msg_info$11
+            .store_slice(ssrc) ;; src:MsgAddressExt
+            .store_int(100000, 32) ;; dest:INVALID
+            .end_cell();
+
+    var (_, stack) = invoke_method(validate_message, [message]);
+
+    throw_if(200, stack.first() != expected_code );
+    throw_if(200, ~ is_null_used_for_testing(stack.second()));
+
+    return 5;
+}
+
+_ test_validate_message_13() {
+    var expected_code = 0;
+    slice ssrc = generate_empty_address();
+    slice sdest = generate_empty_address();
+
+    var message = begin_cell()
+            .store_uint(0, 1) ;; int_msg_info$0
+            .store_uint(0, 1) ;; ihr_disabled:Bool
+            .store_uint(0, 1) ;; bounce:Bool
+            .store_uint(0, 1) ;; bounced:Bool
+            .store_slice(ssrc) ;; src:MsgAddress
+            .store_slice(sdest) ;; dest:MsgAddress
+            .store_slice(ssrc) ;; instead of grams put something invalid
+            .store_dict(null()) ;; extra currencies
+            .store_grams(0) ;; ihr_fee
+            .store_grams(0) ;; fwd_fee
+            .store_uint(1000, 64) ;; created_lt:uint64
+            .store_uint(1000, 32) ;; created_at:uint32
+            .store_uint(0, 1) ;; no init_state
+            .end_cell();
+
+    var (_, stack) = invoke_method(validate_message, [message]);
+
+    throw_if(200, stack.first() != expected_code );
+    throw_if(200, ~ is_null_used_for_testing(stack.second()));
+
+    return 5;
+}
+
 
 
 _ __test_validate_message_total_points(){
