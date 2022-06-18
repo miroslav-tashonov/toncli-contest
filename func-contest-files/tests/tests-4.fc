@@ -6,12 +6,12 @@ forall X -> int is_null_used_for_testing(X x) asm "ISNULL";
     cell merged_dict = new_dict();
     cell discard_dict = new_dict();
     
-    if (is_null(first_dictionary) & is_null(second_dictionary))
+    if (is_null_used_for_testing(first_dictionary) & is_null_used_for_testing(second_dictionary))
     {
         return (null(), null());
     }
 
-    if (~ is_null(first_dictionary))
+    if (~ is_null_used_for_testing(first_dictionary))
     {
       int key = -1;
       do {
@@ -30,7 +30,7 @@ forall X -> int is_null_used_for_testing(X x) asm "ISNULL";
       } until (~ f);
     }
 
-    if (~ is_null(second_dictionary))
+    if (~ is_null_used_for_testing(second_dictionary))
     {
       int key = -1;
       do {
@@ -335,6 +335,18 @@ _ test_merge_hashmaps_10() {
     (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
     throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
     throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary.begin_parse(), correct_second_dictionary.begin_parse()));
+
+    ;;same test different order
+    var (_, stack) = invoke_method(merge_hashmaps, [second_dictionary, first_dictionary]);
+    [cell result_first_dictionary1, cell result_second_dictionary1] = stack;
+    (cell correct_first_dictionary1, cell correct_second_dictionary1 ) = solve_merge_hashmaps(second_dictionary, first_dictionary);
+    
+    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary1.begin_parse(), correct_first_dictionary1.begin_parse()));
+    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary1.begin_parse(), correct_second_dictionary1.begin_parse()));
+
+    ;;make sure that if sent in reverse order the dictionaries wont match because of the discarded KVP value
+    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary1.begin_parse(), result_first_dictionary.begin_parse()));
+    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary1.begin_parse(), result_second_dictionary.begin_parse()));
 
     return 15;
 }
