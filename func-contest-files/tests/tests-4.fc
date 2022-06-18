@@ -132,7 +132,7 @@ _ test_merge_hashmaps_4() {
     throw_if(200, cell_hash(result_first_dictionary) != cell_hash(correct_first_dictionary));
     throw_if(200, ~ is_null_used_for_testing(result_second_dictionary));
 
-    return 10;
+    return 5;
 }
 
 _ test_merge_hashmaps_5() {
@@ -358,7 +358,7 @@ _ test_merge_hashmaps_10() {
     throw_if(200, cell_hash(result_first_dictionary1) == cell_hash(result_first_dictionary));
     throw_if(200, cell_hash(result_second_dictionary1) == cell_hash(result_second_dictionary));
 
-    return 15;
+    return 20;
 }
 
 _ __test_merge_hashmaps_total_points(){
