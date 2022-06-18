@@ -131,7 +131,6 @@ _ test_merge_hashmaps_4() {
     (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
     throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
     throw_if(200, ~ is_null_used_for_testing(result_second_dictionary));
-    throw_if(200, ~ is_null_used_for_testing(correct_second_dictionary));
 
     return 10;
 }
@@ -160,11 +159,20 @@ _ test_merge_hashmaps_5() {
 _ test_merge_hashmaps_6() {
     ;; ARRANGE
     slice test_value = begin_cell().store_uint(1,256).end_cell().begin_parse();
+    slice test_value2 = begin_cell().store_uint(2,256).end_cell().begin_parse();
 
     cell first_dictionary = new_dict();
-    first_dictionary~udict_set(256, 1, test_value);
     cell second_dictionary = new_dict();
-    second_dictionary~udict_set(256, 2, test_value);
+    first_dictionary~udict_set(256, 1, test_value);
+    first_dictionary~udict_set(256, 2, test_value);
+    first_dictionary~udict_set(256, 3, test_value);
+    first_dictionary~udict_set(256, 4, test_value);
+
+    second_dictionary~udict_set(256, 1, test_value2);
+    second_dictionary~udict_set(256, 2, test_value2);
+    second_dictionary~udict_set(256, 3, test_value2);
+    second_dictionary~udict_set(256, 4, test_value2);
+
     ;; ACT
     var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
     [cell result_first_dictionary, cell result_second_dictionary] = stack;
@@ -172,7 +180,8 @@ _ test_merge_hashmaps_6() {
     ;;ASSERT
     (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
     throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
-    throw_if(200, ~ is_null_used_for_testing(result_second_dictionary));
+    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary.begin_parse(), correct_second_dictionary.begin_parse()));
+
 
     return 10;
 }
@@ -217,9 +226,16 @@ _ test_merge_hashmaps_8() {
     slice test_value2 = begin_cell().store_uint(2,256).end_cell().begin_parse();
 
     cell first_dictionary = new_dict();
-    first_dictionary~udict_set(256, 1, test_value);
-    first_dictionary~udict_set(256, 2, test_value2);
     cell second_dictionary = new_dict();
+    second_dictionary~udict_set(256, 1, test_value);
+    second_dictionary~udict_set(256, 2, test_value2);
+    first_dictionary~udict_set(256, 3, test_value2);
+    first_dictionary~udict_set(256, 4, test_value2);
+    first_dictionary~udict_set(256, 5, test_value2);
+    first_dictionary~udict_set(256, 6, test_value2);
+    second_dictionary~udict_set(256, 7, test_value);
+    second_dictionary~udict_set(256, 8, test_value);
+    second_dictionary~udict_set(256, 9, test_value);
 
     ;;ACT
     var (_, stack) = invoke_method(merge_hashmaps, [first_dictionary, second_dictionary]);
