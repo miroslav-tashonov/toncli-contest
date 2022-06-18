@@ -153,6 +153,18 @@ _ test_merge_hashmaps_5() {
     throw_if(200, cell_hash(result_first_dictionary) != cell_hash(correct_first_dictionary));
     throw_if(200, cell_hash(result_second_dictionary) != cell_hash(correct_second_dictionary));
 
+    ;;same test different order
+    var (_, stack) = invoke_method(merge_hashmaps, [second_dictionary, first_dictionary]);
+    [cell result_first_dictionary1, cell result_second_dictionary1] = stack;
+    (cell correct_first_dictionary1, cell correct_second_dictionary1 ) = solve_merge_hashmaps(second_dictionary, first_dictionary);
+    
+    throw_if(200, cell_hash(result_first_dictionary1) != cell_hash(correct_first_dictionary1));
+    throw_if(200, cell_hash(result_second_dictionary1) != cell_hash(correct_second_dictionary1));
+
+    ;; they shouldnt be the same because of the different discarded values
+    throw_if(200, cell_hash(result_first_dictionary1) == cell_hash(result_first_dictionary));
+    throw_if(200, cell_hash(result_second_dictionary1) == cell_hash(result_second_dictionary));
+
     return 10;
 }
 
