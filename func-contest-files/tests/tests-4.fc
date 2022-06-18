@@ -78,7 +78,7 @@ _ test_merge_hashmaps_2() {
 
     ;;ASSERT
     (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
-    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, cell_hash(result_first_dictionary) != cell_hash(correct_first_dictionary));
     throw_if(200, ~ is_null_used_for_testing(result_second_dictionary));
 
     return 5;
@@ -99,13 +99,13 @@ _ test_merge_hashmaps_3() {
 
     ;;ASSERT
     (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
-    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, cell_hash(result_first_dictionary) != cell_hash(correct_first_dictionary));
     throw_if(200, ~ is_null_used_for_testing(result_second_dictionary));
 
     var (_, stack) = invoke_method(merge_hashmaps, [second_dictionary, first_dictionary]);
     [cell result_first_dictionary, cell result_second_dictionary] = stack;
 
-    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, cell_hash(result_first_dictionary) != cell_hash(correct_first_dictionary));
     throw_if(200, ~ is_null_used_for_testing(result_second_dictionary));
 
     return 5;
@@ -129,7 +129,7 @@ _ test_merge_hashmaps_4() {
 
     ;;ASSERT
     (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
-    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, cell_hash(result_first_dictionary) != cell_hash(correct_first_dictionary));
     throw_if(200, ~ is_null_used_for_testing(result_second_dictionary));
 
     return 10;
@@ -150,8 +150,8 @@ _ test_merge_hashmaps_5() {
 
     ;;ASSERT
     (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
-    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
-    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary.begin_parse(), correct_second_dictionary.begin_parse()));
+    throw_if(200, cell_hash(result_first_dictionary) != cell_hash(correct_first_dictionary));
+    throw_if(200, cell_hash(result_second_dictionary) != cell_hash(correct_second_dictionary));
 
     return 10;
 }
@@ -179,9 +179,8 @@ _ test_merge_hashmaps_6() {
 
     ;;ASSERT
     (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
-    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
-    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary.begin_parse(), correct_second_dictionary.begin_parse()));
-
+    throw_if(200, cell_hash(result_first_dictionary) != cell_hash(correct_first_dictionary));
+    throw_if(200, cell_hash(result_second_dictionary) != cell_hash(correct_second_dictionary));
 
     return 10;
 }
@@ -214,8 +213,8 @@ _ test_merge_hashmaps_7() {
 
     ;;ASSERT
     (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
-    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
-    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary.begin_parse(), correct_second_dictionary.begin_parse()));
+    throw_if(200, cell_hash(result_first_dictionary) != cell_hash(correct_first_dictionary));
+    throw_if(200, cell_hash(result_second_dictionary) != cell_hash(correct_second_dictionary));
 
     return 10;
 }
@@ -243,7 +242,7 @@ _ test_merge_hashmaps_8() {
 
     ;;ASSERT
     (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
-    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, cell_hash(result_first_dictionary) != cell_hash(correct_first_dictionary));
     throw_if(200, ~ is_null_used_for_testing(result_second_dictionary));
 
     ;;same test as before just different order
@@ -251,7 +250,7 @@ _ test_merge_hashmaps_8() {
     [cell result_first_dictionary, cell result_second_dictionary] = stack;
 
     ;;ASSERT
-    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, cell_hash(result_first_dictionary) != cell_hash(correct_first_dictionary));
     throw_if(200, ~ is_null_used_for_testing(result_second_dictionary));
 
     return 15;
@@ -285,14 +284,13 @@ _ test_merge_hashmaps_9() {
 
     ;;ASSERT
     (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
-    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, cell_hash(result_first_dictionary) != cell_hash(correct_first_dictionary));
     throw_if(200, ~ is_null_used_for_testing(result_second_dictionary));
 
     ;;same test different order
     var (_, stack) = invoke_method(merge_hashmaps, [second_dictionary, first_dictionary]);
     [cell result_first_dictionary, cell result_second_dictionary] = stack;
-
-    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
+    throw_if(200, cell_hash(result_first_dictionary) != cell_hash(correct_first_dictionary));
     throw_if(200, ~ is_null_used_for_testing(result_second_dictionary));
 
     return 15;
@@ -333,20 +331,20 @@ _ test_merge_hashmaps_10() {
 
     ;;ASSERT
     (cell correct_first_dictionary, cell correct_second_dictionary ) = solve_merge_hashmaps(first_dictionary, second_dictionary);
-    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary.begin_parse(), correct_first_dictionary.begin_parse()));
-    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary.begin_parse(), correct_second_dictionary.begin_parse()));
+    throw_if(200, cell_hash(result_first_dictionary) != cell_hash(correct_first_dictionary));
+    throw_if(200, cell_hash(result_second_dictionary) != cell_hash(correct_second_dictionary));
 
     ;;same test different order
     var (_, stack) = invoke_method(merge_hashmaps, [second_dictionary, first_dictionary]);
     [cell result_first_dictionary1, cell result_second_dictionary1] = stack;
     (cell correct_first_dictionary1, cell correct_second_dictionary1 ) = solve_merge_hashmaps(second_dictionary, first_dictionary);
     
-    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary1.begin_parse(), correct_first_dictionary1.begin_parse()));
-    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary1.begin_parse(), correct_second_dictionary1.begin_parse()));
+    throw_if(200, cell_hash(result_first_dictionary1) != cell_hash(correct_first_dictionary1));
+    throw_if(200, cell_hash(result_second_dictionary1) != cell_hash(correct_second_dictionary1));
 
-    ;;make sure that if sent in reverse order the dictionaries wont match because of the discarded KVP value
-    throw_if(200, ~ equal_slices_used_for_testing(result_first_dictionary1.begin_parse(), result_first_dictionary.begin_parse()));
-    throw_if(200, ~ equal_slices_used_for_testing(result_second_dictionary1.begin_parse(), result_second_dictionary.begin_parse()));
+    ;; they shouldnt be the same because of the different discarded values
+    throw_if(200, cell_hash(result_first_dictionary1) == cell_hash(result_first_dictionary));
+    throw_if(200, cell_hash(result_second_dictionary1) == cell_hash(result_second_dictionary));
 
     return 15;
 }
