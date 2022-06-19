@@ -38,7 +38,7 @@ int equal_slices_used_for_testing(slice a, slice b) asm "SDEQ";
                     cell imp1 = force_cast_to_cell_used_for_testing(initial);
                     cell imp2 = force_cast_to_cell_used_for_testing(result);
 
-                    throw_if(200, cell_hash(initial) != cell_hash(result));
+                    throw_if(200, cell_hash(imp1) != cell_hash(imp2));
                 }
                 else
                 {
