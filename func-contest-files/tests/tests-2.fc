@@ -165,7 +165,7 @@ _ test_validate_message_9() {
 
 _ test_validate_message_10() {
     var expected_code = -1;
-    cell message = generate_external_in_message_with_empty_address(256, begin_cell().store_ref(begin_cell().store_uint(1,256).end_cell()));
+    cell message = generate_external_in_message_with_empty_source_address(256, begin_cell().store_ref(begin_cell().store_uint(1,256).end_cell()));
     var (_, stack) = invoke_method(validate_message, [message]);
 
     var [slice src, slice dest, _, _, _, _] = parse_external_message(message);
@@ -201,11 +201,9 @@ _ test_validate_message_11() {
 }
 
 _ test_validate_message_12() {
-    
-
     var expected_code = -1;
 
-    cell message = generate_external_out_message_with_empty_address(256, begin_cell().store_ref(begin_cell().store_uint(1,256).end_cell()));
+    cell message = generate_external_out_message_with_empty_destination_address(256, begin_cell().store_ref(begin_cell().store_uint(1,256).end_cell()));
     var (_, stack) = invoke_method(validate_message, [message]);
 
     var [slice src, slice dest, _, _, _, _] = parse_external_message(message);
