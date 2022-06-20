@@ -1,4 +1,5 @@
 from flask import Flask, request
+import re
 import json
 import os
 import shutil
@@ -37,7 +38,11 @@ def runtests(filename):
             score = test_result[index+20:index+24]
             score = score.replace("]","")
             score = score.replace(" ","")
-            result_string += f'TASK {i} - {task_names[i-1]} score is : {score}/100 \n'
+            score_digits = [int(s) for s in re.findall(r'\b\d+\b', score)]
+            if(len(score_digits) == 0):
+                score_digits = [0]
+
+            result_string += f'TASK {i} - {task_names[i-1]} score is : {score_digits[0]}/100 \n'
         
         os.chdir('../../../api')
 
