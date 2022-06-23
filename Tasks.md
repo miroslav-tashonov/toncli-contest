@@ -45,7 +45,7 @@ Gas-usage will not affect the ranking. Signatures of all functions described in 
 () recv_internal() {
 }
 
-(int, tuple) validate_message(cell message) method_id {
+(int, [slice, slice, int]) validate_message(cell message) method_id {
 }
 
 ```
