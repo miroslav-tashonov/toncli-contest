@@ -45,7 +45,7 @@ Gas-usage will not affect the ranking. Signatures of all functions described in 
 () recv_internal() {
 }
 
-(int, tuple) validate_message(cell message) method_id {
+(int, [slice, slice, int]) validate_message(cell message) method_id {
 }
 
 ```
@@ -56,7 +56,7 @@ Gas-usage will not affect the ranking. Signatures of all functions described in 
   TASK 3 - (De)Serialize to Cell
   Write the methods
     a) for serialization of tuple of arbitrary values of different types to Cell
-	b) for deserialization of Cell created by method above to original tuple
+    b) for deserialization of Cell created by method above to original tuple
   
   `serialize` method gets as input tuple with arbitrary number of elements from 0 
   to 128 (both 0 and 128 elements are allowed) and outputs Cell. Elements of the 
@@ -66,6 +66,11 @@ Gas-usage will not affect the ranking. Signatures of all functions described in 
   `deserialize` method gets a cell produced by `serialize` method and should 
   return origin tuple.
   
+  Note, for illustrative purposes`serialize_t3` and `deserialize_t3` functions
+  which serialize and deserialize tuple with exactly 3 elements 
+  (only null, int, cell and slice are supportd) to/from a cell  have been added.
+  Participants are free to not use logic from there and come up with their own
+  implementations
 -}
 
 
@@ -76,6 +81,67 @@ Gas-usage will not affect the ranking. Signatures of all functions described in 
 }
 
 (tuple) deserialize(cell serialized) method_id {
+}
+
+;; ==== Illustrative material ====
+builder serialize_element(builder b, var x) {
+  if(is_null(x)) {
+    b~store_uint(0,3);
+  }
+  if(is_int(x)) {
+    ;; before this point compiler do not know true type of x
+    ;; force it to be int
+    int i_x = force_cast_to_int(x);
+    b = b.store_uint(1,3).store_int(i_x, 257);
+  }
+  if(is_cell(x)) {
+    ;; before this point compiler do not know true type of x
+    ;; force it to be cell
+    cell c_x = force_cast_to_cell(x);
+    b = b.store_uint(2,3).store_ref(c_x);
+  }
+  if(is_slice(x)) {
+    ;; before this point compiler do not know true type of x
+    ;; force it to be slice
+    slice s_x = force_cast_to_slice(x);
+    b = b.store_uint(3,3).store_ref(begin_cell().store_slice(s_x).end_cell());
+  }
+  return b;
+}
+
+(slice, tuple) deserialize_element_to_tuple(slice s, tuple t) {
+  int element_type = s~load_uint(3);
+  if(element_type == 0) {
+    t~tpush(null());
+  }
+  if(element_type == 1) {
+    t~tpush(s~load_int(257));
+  }
+  if(element_type == 2) {
+    t~tpush(s~load_ref());
+  }
+  if(element_type == 3) {
+    t~tpush(s~load_ref().begin_parse());
+  }
+  return (s,t);
+}
+
+cell serialize_t3(tuple three_elements) method_id {
+  throw_unless(777, three_elements.tuple_length() == 3);
+  builder srl = begin_cell();
+  srl = serialize_element(srl, three_elements.first());
+  srl = serialize_element(srl, three_elements.second());
+  srl = serialize_element(srl, three_elements.third());
+  return srl.end_cell();
+}
+
+tuple deserialize_t3(cell sc) method_id {
+  slice s = sc.begin_parse();
+  tuple t = empty_tuple();
+  repeat (3) {
+    (s,t) = deserialize_element_to_tuple(s,t);
+  }
+  return t;
 }
 
 ```
@@ -124,6 +190,7 @@ Gas-usage will not affect the ranking. Signatures of all functions described in 
 **typehelpers.fc**
 ```
 forall X -> (tuple, X) ~tpop(tuple t) asm "TPOP";
+int tuple_length(tuple t) asm "TLEN";
 forall X -> int is_null(X x) asm "ISNULL";
 forall X -> int is_int(X x) asm "<{ TRY:<{ 0 PUSHINT ADD DROP -1 PUSHINT }>CATCH<{ 2DROP 0 PUSHINT }> }>CONT 1 1 CALLXARGS";
 forall X -> int is_cell(X x) asm "<{ TRY:<{ CTOS DROP -1 PUSHINT }>CATCH<{ 2DROP 0 PUSHINT }> }>CONT 1 1 CALLXARGS";
