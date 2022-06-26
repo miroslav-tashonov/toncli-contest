@@ -90,10 +90,10 @@ _ test_validate_message_7() {
     var code = stack.first();
     throw_if(200, code != expected_code );
 
-    tuple return_tuple = stack.second();
-    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.first(), src));
-    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.second(), dest));
-    throw_if(200, return_tuple.third() != amount );
+    [slice result_src, slice result_dest, int result_amount] = stack.second();
+    throw_if(200, ~ equal_slices_used_for_testing(result_src, src));
+    throw_if(200, ~ equal_slices_used_for_testing(result_dest, dest));
+    throw_if(200, result_amount != amount );
 
 
     return 10;
@@ -111,10 +111,10 @@ _ test_validate_message_8() {
     var code = stack.first();
     throw_if(200, code != expected_code );
 
-    tuple return_tuple = stack.second();
-    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.first(), src));
-    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.second(), dest));
-    throw_if(200, ~ is_null_used_for_testing(return_tuple.third()) );
+    [slice result_src, slice result_dest, int result_amount] = stack.second();
+    throw_if(200, ~ equal_slices_used_for_testing(result_src, src));
+    throw_if(200, ~ equal_slices_used_for_testing(result_dest, dest));
+    throw_if(200, ~ is_null_used_for_testing(result_amount) );
 
     return 10;
 }
@@ -131,10 +131,10 @@ _ test_validate_message_9() {
     var code = stack.first();
     throw_if(200, code != expected_code );
 
-    tuple return_tuple = stack.second();
-    throw_if(200, ~ is_null_used_for_testing(return_tuple.first()) );
-    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.second(), dest));
-    throw_if(200, ~ is_null_used_for_testing(return_tuple.third()) );
+    [slice result_src, slice result_dest, int result_amount] = stack.second();
+    throw_if(200, ~ is_null_used_for_testing(result_src) );
+    throw_if(200, ~ equal_slices_used_for_testing(result_dest, dest));
+    throw_if(200, ~ is_null_used_for_testing(result_amount) );
 
     return 10;
 }
@@ -152,10 +152,10 @@ _ test_validate_message_10() {
     var code = stack.first();
     throw_if(200, code != expected_code );
 
-    tuple return_tuple = stack.second();
-    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.first(), src));
-    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.second(), dest));
-    throw_if(200, ~ is_null_used_for_testing(return_tuple.third()) );
+    [slice result_src, slice result_dest, int result_amount] = stack.second();
+    throw_if(200, ~ equal_slices_used_for_testing(result_src, src));
+    throw_if(200, ~ equal_slices_used_for_testing(result_dest, dest));
+    throw_if(200, ~ is_null_used_for_testing(result_amount) );
 
     return 10;
 }
@@ -172,10 +172,11 @@ _ test_validate_message_11() {
     var code = stack.first();
     throw_if(200, code != expected_code );
 
-    tuple return_tuple = stack.second();
-    throw_if(200, ~ equal_slices_used_for_testing(return_tuple.first(), src));
-    throw_if(200, ~ is_null_used_for_testing(return_tuple.second()) );
-    throw_if(200, ~ is_null_used_for_testing(return_tuple.third()) );
+    [slice result_src, slice result_dest, int result_amount] = stack.second();
+
+    throw_if(200, ~ equal_slices_used_for_testing(result_src, src));
+    throw_if(200, ~ is_null_used_for_testing(result_dest) );
+    throw_if(200, ~ is_null_used_for_testing(result_amount) );
 
     return 10;
 }
@@ -204,10 +205,10 @@ _ test_validate_message_12() {
     var code = stack.first();
     throw_if(200, code != expected_code );
 
-    tuple return_tuple = stack.second();
-    throw_if(200, ~ is_null_used_for_testing(return_tuple.first()));
-    throw_if(200, ~ is_null_used_for_testing(return_tuple.second()) );
-    throw_if(200, ~ is_null_used_for_testing(return_tuple.third()) );
+    [slice result_src, slice result_dest, int result_amount] = stack.second();
+    throw_if(200, ~ is_null_used_for_testing(result_src));
+    throw_if(200, ~ is_null_used_for_testing(result_dest) );
+    throw_if(200, ~ is_null_used_for_testing(result_amount) );
 
     return 10;
 }
