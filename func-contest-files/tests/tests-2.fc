@@ -179,32 +179,22 @@ _ test_validate_message_11() {
     return 10;
 }
 
+;;same test as the previous one only without init state
 _ test_validate_message_12() {
     var expected_code = -1;
+    var payload = begin_cell().store_ref(begin_cell().store_uint(1,256).end_cell());
 
-    cell payload = begin_cell().store_uint(13,32).end_cell();
-
-    slice ssrc = generate_empty_address();
-    slice sdest = generate_empty_address();
-
-    var message = begin_cell()
-            .store_uint(3, 2) ;;ext_out_msg_info$11
-            .store_slice(ssrc) ;; src:MsgAddressExt
-            .store_slice(sdest) ;; dest:MsgAddressExt
-            .store_uint(1000, 64) ;; created_lt:uint64
-            .store_uint(1000, 32) ;; created_at:uint32
-            .store_uint(0, 1)  ;; no init_state
-            .store_uint(1,1) ;; Either ^X
-            .store_ref(payload)
-            .end_cell();
-            
+    cell message = generate_external_out_message_with_empty_destination_address(256, 0, payload);  ;; without init state
     var (_, stack) = invoke_method(validate_message, [message]);
+
+    var [slice src, slice dest, _, _, _, _] = parse_external_message(message);
 
     var code = stack.first();
     throw_if(200, code != expected_code );
 
     [slice result_src, slice result_dest, int result_amount] = stack.second();
-    throw_if(200, ~ is_null_used_for_testing(result_src));
+
+    throw_if(200, ~ equal_slices_used_for_testing(result_src, src));
     throw_if(200, ~ is_null_used_for_testing(result_dest) );
     throw_if(200, ~ is_null_used_for_testing(result_amount) );
 
