@@ -70,8 +70,6 @@ _ test_validate_message_6() {
     cell message = generate_internal_message_with_bad_init_state_data();
     var (_, stack) = invoke_method(validate_message, [message]);
 
-    var [_, _, _, slice src, slice dest, int amount, _, _, _] = parse_internal_message(message);
-
     throw_if(200, stack.first() != expected_code );
     throw_if(200, ~ is_null_used_for_testing(stack.second()));
 
