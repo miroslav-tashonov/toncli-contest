@@ -5,7 +5,7 @@ The organizers of the competition reserve the right to publish participants solu
 
 Solution should only contain 5 files: 1.fc, 2.fc, 3.fc, 4.fc and 5.fc.
 
-In the same directory with contestant solutions stdlib.fc (from [ton-blochcain repository](https://github.com/ton-blockchain/ton/blob/master/crypto/smartcont/stdlib.fc)) and `typehelpers.fc` (see below all tasks) will be presented. Contestants are welcome to `include` those files (note that functions declared in solution should not overwrite those in stdlib and typehelpers.fc)
+All contestant solutions will be linked with stdlib.fc (from [ton-blochcain repository](https://github.com/ton-blockchain/ton/blob/master/crypto/smartcont/stdlib.fc)) and `typehelpers.fc` (see below all tasks) during compilation. Contestants are welcome to use commands from those files (note that functions declared in solution should not overwrite those in stdlib and typehelpers.fc).
 
 Gas-usage will not affect the ranking. Signatures of all functions described in the task conditions should not be changed.
 
@@ -200,4 +200,13 @@ forall X -> cell force_cast_to_cell(X x) asm "NOP";
 forall X -> slice force_cast_to_slice(X x) asm "NOP";
 forall X -> int force_cast_to_int(X x) asm "NOP";
 forall X -> tuple force_cast_to_tuple(X x) asm "NOP";
+;; Some other helpers
+forall X -> tuple unsafe_tuple(X x) asm "NOP";
+cell get_c5() asm "c5 PUSH";
+builder store_builder(builder to, builder from) asm "STBR";
+() set_lib_code(cell library, int x) impure asm "SETLIBCODE";
+() change_lib(int lib_hash, int x) impure asm "CHANGELIB";
+builder store_coins(builder b, int x) asm "STVARUINT16";
+(slice, int) load_coins(slice s) asm( -> 1 0) "LDVARUINT16";
+
 ```
